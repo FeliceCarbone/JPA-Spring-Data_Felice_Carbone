@@ -3,6 +3,8 @@ package it.aulab.progetto_blog.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,9 +31,11 @@ public class Post {
 
     @ManyToOne
     @JoinColumn (name = "author_id")
+    @JsonIgnoreProperties({"posts"})
     private Author author;
 
     @OneToMany (mappedBy = "post")
+    @JsonIgnoreProperties({"post"})
     private List<Comment> comments = new ArrayList<Comment>();
 
 
