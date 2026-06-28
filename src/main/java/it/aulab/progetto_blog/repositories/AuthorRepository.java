@@ -19,5 +19,7 @@ public interface AuthorRepository extends ListCrudRepository<Author, Long> {
     @Query( "SELECT a FROM Author a WHERE a.name = 'Giuseppe'")
     List<Author> authorWithSameNameNonNative();
 
+    List<Author> findByEmail(String email);
+
 
 }

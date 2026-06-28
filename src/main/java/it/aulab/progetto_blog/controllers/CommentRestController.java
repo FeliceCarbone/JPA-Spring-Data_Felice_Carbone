@@ -15,44 +15,45 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import it.aulab.progetto_blog.dtos.CommentDto;
 import it.aulab.progetto_blog.models.Author;
 import it.aulab.progetto_blog.models.Comment;
 import it.aulab.progetto_blog.models.Post;
 import it.aulab.progetto_blog.repositories.CommentRepository;
+import it.aulab.progetto_blog.services.CommentService;
 
 @RestController
-@RequestMapping("/comments")
-public class CommentController {
+@RequestMapping("/api/comments")
+public class CommentRestController {
     @Autowired
     CommentRepository commentRepository;
 
+    @Autowired
+    CommentService commentService;
+
     @GetMapping
-    public List<Comment> getAllComments(){
-        return commentRepository.findAll();
+    public List<CommentDto> getAllComments(){
+        return commentService.readAll();
     }
 
     @GetMapping("/{id}")
-    public Comment getComment(@PathVariable("id") Long id) {
-        return commentRepository.findById(id).get(); 
+    public CommentDto getComment(@PathVariable("id") Long id) {
+        return commentService.read(id); 
     }
 
-    @PostMapping
-    public Comment createComment(@RequestBody Comment comment) {
-        return commentRepository.save(comment);
+    @PostMapping()
+    public CommentDto createComment(@RequestBody Comment comment) {
+        return commentService.create(comment);
     }
 
     @PutMapping("{id}")
-    public Comment updateComment(@PathVariable("id") Long id, @RequestBody Comment comment){
+    public CommentDto updateComment(@PathVariable("id") Long id, @RequestBody Comment comment){
         comment.setId(id);
-        return commentRepository.save(comment);
+        return commentService.update(id, comment);
     }
 
     @DeleteMapping("/{id}")
     public void deleteComment(@PathVariable("id") Long id) {
-        if (commentRepository.existsById(id)) {
-            commentRepository.deleteById(id);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found");
-        }
+        commentService.delete(id);
     }
 }
