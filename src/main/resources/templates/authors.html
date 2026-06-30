@@ -23,6 +23,12 @@
                 <a th:href="@{/authors/create}" class="btn btn-primary m-2">
                     <i class="fa-solid fa-plus"></i>
                 </a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        logout
+                    </button>
+                </form>
             </div>
         </div>
     </div>
